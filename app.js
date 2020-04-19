@@ -23,6 +23,8 @@ app.use('/api/v1/auth', authRouter );
 //Setup our mini-crm company Router
 app.use('/api/v1/company', companyRouter );
 
+//Setup our mini-crm employee Router
+app.use('/api/v1/employee', employeeRouter );
 
 app.listen(port, () => {
   console.log(`API running on port ${port}`);
