@@ -1,10 +1,13 @@
 const mysql = require('mysql');
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 const dbConnection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : '',
-  database : 'mini-crm'
+  host     : process.env.HOST || 'localhost',
+  user     : process.env.USER || 'root',
+  password : process.env.PASSWORD || '',
+  database : process.env.DATABASE || 'mini-crm'
 });
 
 

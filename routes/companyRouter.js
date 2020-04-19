@@ -7,11 +7,6 @@ router.get('/', (req, res) => {
   })
 });
 
-router.post('/signup', (req, res) => {
-
-});
-
-
 router.post('/signin', (req, res) => {
 
 });
