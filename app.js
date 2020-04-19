@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
-const crmRouter = require('./routes');
+const authRouter = require('./routes/authRouter');
+const companyRouter = require('./routes/companyRouter');
+const employeeRouter = require('./routes/employeeRouter');
 
 app.use(express.json());
 app.use((req, res, next) => {
@@ -12,8 +14,8 @@ app.use((req, res, next) => {
 });
 
 
-//Setup our mini-crm Router
-app.use('/api/v1', crmRouter );
+//Setup our mini-crm auth Router
+app.use('/api/v1/auth', authRouter );
 
 app.listen(port, () => {
   console.log(`API running on port ${port}`);
