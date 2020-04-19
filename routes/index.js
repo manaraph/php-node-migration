@@ -6,6 +6,12 @@ router.get('/', (req, res) => {
     message: "Welcome to this Mini CRM app"
   })
 });
+
+router.post('/signup', (req, res) => {
+
+});
+
+
 router.post('/signin', (req, res) => {
 
 });
