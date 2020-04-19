@@ -5,10 +5,10 @@ const getCompanies = (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      res.json({ error: 'Error fetching companies to the database' });
+      return res.json({ error: 'Error fetching companies to the database' });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'success',
       data: {
         companies: result
@@ -23,10 +23,10 @@ const createCompany = (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      res.json({ error: 'Error saving company to the database' });
+      return res.json({ error: 'Error saving company to the database' });
     }
 
-    res.status(200).json({
+    return res.status(200).json({
       message: 'success',
       data: {
         companyId: result.insertId
@@ -42,16 +42,15 @@ const updateCompany = async (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      res.json({ error: 'Error updating company' });
-    }
-        
-    if (result.affectedRows == 0) {
-      // not found Customer with the id
-      res.json({ message: "company not found" });
-      return;
+      return res.json({ error: 'Error updating company' });
     }
 
-    res.status(200).json({
+    if (result.affectedRows == 0) {
+      // not found Customer with the id
+      return res.json({ message: "company not found" });
+    }
+
+    return res.status(200).json({
       message: 'success',
       data: {
         companyId: id,
@@ -63,8 +62,31 @@ const updateCompany = async (req, res, next) => {
   });
 };
 
+const deleteCompany = async (req, res, next) => {
+  const { id } = req.params;
+  await sql.query("DELETE FROM companies WHERE id = ?", id, (err, result) => {
+    if (err) {
+      console.log("error: ", err);
+      return res.json({ error: 'Error deleting company' });
+    }
+        
+    if (result.affectedRows == 0) {
+      // not found Customer with the id
+      return res.json({ message: "company not found" });
+    }
+
+    return res.status(200).json({
+      message: 'success',
+      data: {
+        companyId: id
+      }
+    });
+  });
+};
+
 module.exports = {
   getCompanies,
   createCompany,
   updateCompany,
+  deleteCompany
 }

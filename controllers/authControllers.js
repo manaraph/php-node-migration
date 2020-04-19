@@ -10,32 +10,32 @@ const signIn = (req, res) => {
 
   //check if email and password is empty
   if(!email || !password){
-      res.status(422).send({ error: 'You must provide an email and a password.'});
+    return res.status(422).send({ error: 'You must provide an email and a password.'});
   }
   //check email validity
   const checkedEmail = /\S+@\S+\.\S+/.test(email);
   if(!checkedEmail){
-      res.status(400).json({message: 'Please enter a valid email'})
+    return res.status(400).json({message: 'Please enter a valid email'})
   }
   //If email is correct then run query
   sql.query("SELECT * FROM admin WHERE email = ? ", email, (err, result) => {
     if(err){ 
       console.log(err);
-      res.json({ error: 'There was an error signing in user.' });
+      return res.json({ error: 'There was an error signing in user.' });
     }
     //If no row was found
     if(!result.length){
-      res.status(400).json({message: 'The credentials you provided is incorrect'})
+      return res.status(400).json({message: 'The credentials you provided is incorrect'})
     }
     //check if the password match the hashed password in database
     let dbpass = result[0].password;
     bcrypt.compare(password, dbpass).then(valid => {
       if(!valid){
-          res.status(400).json({message: 'The credentials you provided is incorrect'}) 
+        return res.status(400).json({message: 'The credentials you provided is incorrect'}) 
       }
 
       jwt.sign({ email }, process.env.SECRET, {expiresIn: '7d'}, (err, token) => {
-        res.status(200).json({
+        return res.status(200).json({
         message: 'success',
         data: {
           token,
@@ -52,13 +52,13 @@ const createAdmin = (req, res, next) => {
   const saltRounds = process.env.saltRounds || 8;
 
   if(!email || !password) {
-    res.status(422).send({ error: 'You must provide an email and a password.'})
+    return res.status(422).send({ error: 'You must provide an email and a password.'})
   }
 
   //check email validity
   const checkedEmail = /\S+@\S+\.\S+/.test(email);
   if(!checkedEmail){
-      res.status(400).json({message: 'Please enter a valid email'})
+    return res.status(400).json({message: 'Please enter a valid email'})
   }
 
   bcrypt.hash(password, saltRounds).then( hash => {   
@@ -66,11 +66,11 @@ const createAdmin = (req, res, next) => {
       if (err) {
         console.log("error: ", err);
         // next(err, null);
-        res.json({ error: 'Error saving user to the database' });
+        return res.json({ error: 'Error saving user to the database' });
       }
   
       jwt.sign({ email }, process.env.SECRET, {expiresIn: '7d'}, (err, token) => {
-        res.status(201).json({
+        return res.status(201).json({
           message: 'success',
           data: {
             token,
