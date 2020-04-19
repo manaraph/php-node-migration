@@ -4,8 +4,6 @@ const auth = require('../controllers/authControllers')
 
 router.post('/signup', auth.createAdmin);
 
-router.post('/signin', (req, res) => {
-
-});
+router.post('/signin', auth.signIn);
 
 module.exports = router;
