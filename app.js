@@ -17,6 +17,10 @@ app.use((req, res, next) => {
 //Setup our mini-crm auth Router
 app.use('/api/v1/auth', authRouter );
 
+//Setup our mini-crm company Router
+app.use('/api/v1/company', companyRouter );
+
+
 app.listen(port, () => {
   console.log(`API running on port ${port}`);
 });

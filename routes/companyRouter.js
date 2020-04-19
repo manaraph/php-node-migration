@@ -1,14 +1,8 @@
 const express = require('express');
 const router = express.Router();
+const company = require('../controllers/companyController')
 
-router.get('/', (req, res) => {
-  res.status(200).send({
-    message: "Welcome to this Mini CRM app"
-  })
-});
-
-router.post('/signin', (req, res) => {
-
-});
+router.get('/', company.createCompany);
+router.post('/', company.createCompany);
 
 module.exports = router;

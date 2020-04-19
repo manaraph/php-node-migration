@@ -47,7 +47,7 @@ const signIn = (req, res) => {
   })
 };
 
-const createAdmin = async (req, res, next) => {
+const createAdmin = (req, res, next) => {
   const { email, password } = req.body;
   const saltRounds = process.env.saltRounds || 8;
 
