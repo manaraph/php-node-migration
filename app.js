@@ -1,11 +1,14 @@
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000;
+const bodyParser = require('body-parser');
 const authRouter = require('./routes/authRouter');
 const companyRouter = require('./routes/companyRouter');
 const employeeRouter = require('./routes/employeeRouter');
 
-app.use(express.json());
+const port = process.env.PORT || 5000;
+// app.use(express.json());
+app.use(bodyParser.urlencoded({ extended: true}));
+app.use(bodyParser.json());
 app.use((req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', `${process.env.FRONTENDURL || 'http://localhost:3000'}`);
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
