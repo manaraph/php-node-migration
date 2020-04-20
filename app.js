@@ -16,6 +16,11 @@ app.use((req, res, next) => {
   next();
 });
 
+app.get('/', (req, res) => {
+  res.json({
+    message: "welcome to this mini-crm API"
+  })
+});
 
 //Setup our mini-crm auth Router
 app.use('/api/v1/auth', authRouter );
@@ -25,6 +30,14 @@ app.use('/api/v1/company', companyRouter );
 
 //Setup our mini-crm employee Router
 app.use('/api/v1/employee', employeeRouter );
+
+// Handle undefined routes
+app.use('*', (_req, res) => {
+  res.json({
+    success: false,
+    message: 'Resource not available'
+  });
+});
 
 app.listen(port, () => {
   console.log(`API running on port ${port}`);
