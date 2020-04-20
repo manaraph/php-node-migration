@@ -19,7 +19,7 @@ const getCompanies = (req, res, next) => {
 
 const createCompany = (req, res, next) => {
   const { name, email, logo, website } = req.body;
-  sql.query("INSERT INTO companies SET name = ?, email = ?, website = ?", [name, email, website], (err, result) => {
+  sql.query("INSERT INTO companies SET company_name = ?, email = ?, website = ?", [name, email, website], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
@@ -38,7 +38,7 @@ const createCompany = (req, res, next) => {
 const updateCompany = async (req, res, next) => {
   const { name, email, website } = req.body;
   const { id } = req.params;
-  await sql.query("UPDATE companies SET name = ?, email = ?, website = ? WHERE id = ?", [name, email, website, id], (err, result) => {
+  await sql.query("UPDATE companies SET company_name = ?, email = ?, website = ? WHERE id = ?", [name, email, website, id], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
@@ -54,7 +54,7 @@ const updateCompany = async (req, res, next) => {
       message: 'success',
       data: {
         companyId: id,
-        name, 
+        companyName: name, 
         email, 
         website
       }
