@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const dotenv = require('dotenv');
-
 dotenv.config();
 
 const dbConnection = mysql.createConnection({
@@ -10,9 +9,8 @@ const dbConnection = mysql.createConnection({
   database : process.env.DATABASE || 'mini-crm'
 });
 
-
-dbConnection.connect(function(err) {
-  if(err) {                                     // or restarting (takes a while sometimes).
+dbConnection.connect( err => {
+  if(err) {       // or restarting (takes a while sometimes).
     console.log('error when connecting to db:', err);
     setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
   }
@@ -27,7 +25,7 @@ const handleDisconnect = () => {
     database : process.env.DATABASE || 'mini-crm'
   });
   
-  dbConnection.connect(function(err) {
+  dbConnection.connect( err => {
     if(err) {                                     // or restarting (takes a while sometimes).
       console.log('error when connecting to db:', err);
       setTimeout(handleDisconnect, 2000); // We introduce a delay before attempting to reconnect,
@@ -35,7 +33,7 @@ const handleDisconnect = () => {
     console.log("Connected to database")
   });                                     // process asynchronous requests in the meantime.
                                           // If you're also serving http, display a 503 error.
-  dbConnection.on('error', function(err) {
+  dbConnection.on('error', err => {
     console.log('db error', err);
     if(err.code === 'PROTOCOL_CONNECTION_LOST') { // Connection to the MySQL server is usually
       handleDisconnect();                         // lost due to either server restart, or a
