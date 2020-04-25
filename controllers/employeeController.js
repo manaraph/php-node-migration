@@ -5,7 +5,7 @@ const getEmployees = (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.json({ error: 'Error fetching employees to the database' });
+      return res.status(400).json({ error: 'Error fetching employees to the database' });
     }
 
     return res.status(200).json({
@@ -23,7 +23,7 @@ const createEmployee = (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.json({ error: 'Error saving Employee to the database' });
+      return res.status(400).json({ error: 'Error saving Employee to the database' });
     }
 
     return res.status(200).json({
@@ -42,7 +42,7 @@ const updateEmployee = async (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.json({ error: 'Error updating Employee' });
+      return res.status(400).json({ error: 'Error updating Employee' });
     }
 
     if (result.affectedRows == 0) {
@@ -69,7 +69,7 @@ const deleteEmployee = async (req, res, next) => {
   await sql.query("DELETE FROM employees WHERE id = ?", id, (err, result) => {
     if (err) {
       console.log("error: ", err);
-      return res.json({ error: 'Error deleting employee' });
+      return res.status(400).json({ error: 'Error deleting employee' });
     }
         
     if (result.affectedRows == 0) {

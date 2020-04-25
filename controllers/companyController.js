@@ -5,7 +5,7 @@ const getCompanies = (req, res, next) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.json({ error: 'Error fetching companies to the database' });
+      return res.status(400).json({ error: 'Error fetching companies to the database' });
     }
 
     return res.status(200).json({
@@ -19,11 +19,11 @@ const getCompanies = (req, res, next) => {
 
 const createCompany = (req, res, next) => {
   const { name, email, logo, website } = req.body;
-  sql.query("INSERT INTO companies SET company_name = ?, email = ?, website = ?", [name, email, website], (err, result) => {
+  sql.query("INSERT INTO companies SET name = ?, email = ?, website = ?", [name, email, website], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.json({ error: 'Error saving company to the database' });
+      return res.status(400).json({ error: 'Error saving company to the database' });
     }
 
     return res.status(200).json({
@@ -38,11 +38,11 @@ const createCompany = (req, res, next) => {
 const updateCompany = async (req, res, next) => {
   const { name, email, website } = req.body;
   const { id } = req.params;
-  await sql.query("UPDATE companies SET company_name = ?, email = ?, website = ? WHERE id = ?", [name, email, website, id], (err, result) => {
+  await sql.query("UPDATE companies SET name = ?, email = ?, website = ? WHERE id = ?", [name, email, website, id], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.json({ error: 'Error updating company' });
+      return res.status(400).json({ error: 'Error updating company' });
     }
 
     if (result.affectedRows == 0) {
@@ -67,7 +67,7 @@ const deleteCompany = async (req, res, next) => {
   await sql.query("DELETE FROM companies WHERE id = ?", id, (err, result) => {
     if (err) {
       console.log("error: ", err);
-      return res.json({ error: 'Error deleting company' });
+      return res.status(400).json({ error: 'Error deleting company' });
     }
         
     if (result.affectedRows == 0) {
