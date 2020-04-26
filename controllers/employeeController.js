@@ -1,6 +1,6 @@
 const sql = require('../config/dbConfig');
 
-const getEmployees = (req, res, next) => {
+const getAllEmployees = (req, res, next) => {
   sql.query("SELECT * FROM employees", (err, result) => {
     if (err) {
       console.log("error: ", err);
@@ -17,9 +17,28 @@ const getEmployees = (req, res, next) => {
   });
 };
 
+const getEmployees = (req, res, next) => {
+  const { companyId } = req.params;
+  sql.query("SELECT * FROM employees WHERE company = ?", companyId, (err, result) => {
+    if (err) {
+      console.log("error: ", err);
+      // next(err, null);
+      return res.status(400).json({ error: 'Error fetching employees to the database' });
+    }
+
+    return res.status(200).json({
+      message: 'success',
+      data: {
+        employees: result
+      }
+    });
+  });
+};
+
 const createEmployee = (req, res, next) => {
-  const { firstname, lastname, company, email, phone } = req.body;
-  sql.query("INSERT INTO employees SET firstname = ?, lastname = ?, company = ?, email = ?, phone = ?", [firstname, lastname, company, email, phone ], (err, result) => {
+  const { firstname, lastname, email, phone } = req.body;
+  const { companyId } = req.params;
+  sql.query("INSERT INTO employees SET firstname = ?, lastname = ?, company = ?, email = ?, phone = ?", [firstname, lastname, companyId, email, phone ], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
@@ -37,8 +56,8 @@ const createEmployee = (req, res, next) => {
 
 const updateEmployee = async (req, res, next) => {
   const { firstname, lastname, company, email, phone } = req.body;
-  const { id } = req.params;
-  await sql.query("UPDATE employees SET firstname = ?, lastname = ?, company = ?, email = ?, phone = ? WHERE id = ?", [firstname, lastname, company, email, phone, id ], (err, result) => {
+  const { employeeId } = req.params;
+  await sql.query("UPDATE employees SET firstname = ?, lastname = ?, company = ?, email = ?, phone = ? WHERE id = ?", [firstname, lastname, company, email, phone, employeeId ], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
@@ -53,7 +72,7 @@ const updateEmployee = async (req, res, next) => {
     return res.status(200).json({
       message: 'success',
       data: {
-        employeeId: id,
+        employeeId,
         firstname, 
         lastname, 
         company, 
@@ -65,8 +84,8 @@ const updateEmployee = async (req, res, next) => {
 };
 
 const deleteEmployee = async (req, res, next) => {
-  const { id } = req.params;
-  await sql.query("DELETE FROM employees WHERE id = ?", id, (err, result) => {
+  const { employeeId } = req.params;
+  await sql.query("DELETE FROM employees WHERE id = ?", employeeId, (err, result) => {
     if (err) {
       console.log("error: ", err);
       return res.status(400).json({ error: 'Error deleting employee' });
@@ -80,13 +99,14 @@ const deleteEmployee = async (req, res, next) => {
     return res.status(200).json({
       message: 'success',
       data: {
-        employeeId: id
+        employeeId
       }
     });
   });
 };
 
 module.exports = {
+  getAllEmployees,
   getEmployees,
   createEmployee,
   updateEmployee,
