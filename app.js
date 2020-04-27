@@ -2,8 +2,9 @@ const express = require('express');
 const cors = require('cors');
 const bodyParser = require('body-parser');
 const authRouter = require('./routes/authRouter');
-const companyRouter = require('./routes/companyRouter');
-const employeeRouter = require('./routes/employeeRouter');
+const businessRouter = require('./routes/businessRouter');
+const userRouter = require('./routes/userRouter');
+const reviewRouter = require('./routes/reviewRouter');
 const verifyToken = require('./middleware/verifyToken');
 const app = express();
 
@@ -22,10 +23,13 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth', authRouter );
 
 //Setup our mini-crm company Router
-app.use('/api/v1/company', verifyToken, companyRouter );
+app.use('/api/v1/company', verifyToken, businessRouter );
 
 //Setup our mini-crm employee Router
-app.use('/api/v1/employee', verifyToken, employeeRouter );
+app.use('/api/v1/employee', verifyToken, userRouter );
+
+//Setup our mini-crm employee Router
+app.use('/api/v1/review', verifyToken, reviewRouter );
 
 // Handle undefined routes
 app.use('*', (_req, res) => {
