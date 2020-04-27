@@ -2,7 +2,7 @@ const sql = require('../config/dbConfig');
 
 const createReview = (req, res, next) => {
   const { businessId, reviewer, review } = req.body;
-  sql.query("INSERT INTO business_reviews SET businessId = ?, reviewer = ?, review = ?", [businessId, reviewer, review ], (err, result) => {
+  sql.query("INSERT INTO reviews SET businessId = ?, reviewer = ?, review = ?", [businessId, reviewer, review ], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
