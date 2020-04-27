@@ -1,92 +1,42 @@
 const sql = require('../config/dbConfig');
 
 const getCompanies = (req, res, next) => {
-  sql.query("SELECT * FROM companies", (err, result) => {
+  sql.query("SELECT * FROM business_information", (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.status(400).json({ error: 'Error fetching companies to the database' });
+      return res.status(400).json({ error: 'Error fetching business to the database' });
     }
 
     return res.status(200).json({
       message: 'success',
       data: {
-        companies: result
+        businesses: result
       }
     });
   });
 };
 
 const createCompany = (req, res, next) => {
-  const { name, email, logo, website } = req.body;
-  sql.query("INSERT INTO companies SET name = ?, email = ?, website = ?", [name, email, website], (err, result) => {
+  const { busineessName, email, website, description, business_addr } = req.body;
+  sql.query("INSERT INTO business_information SET busineessName = ?, email = ?, website = ?, description = ?, business_addr = ?", [busineessName, email, website, description, business_addr], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
-      return res.status(400).json({ error: 'Error saving company to the database' });
+      return res.status(400).json({ error: 'Error saving buiness to the database' });
     }
 
     return res.status(200).json({
       message: 'success',
       data: {
-        companyId: result.insertId
+        businessId: result.insertId
       }
     });
   });
 };
 
-const updateCompany = async (req, res, next) => {
-  const { name, email, website } = req.body;
-  const { id } = req.params;
-  await sql.query("UPDATE companies SET name = ?, email = ?, website = ? WHERE id = ?", [name, email, website, id], (err, result) => {
-    if (err) {
-      console.log("error: ", err);
-      // next(err, null);
-      return res.status(400).json({ error: 'Error updating company' });
-    }
-
-    if (result.affectedRows == 0) {
-      // not found Customer with the id
-      return res.json({ message: "company not found" });
-    }
-
-    return res.status(200).json({
-      message: 'success',
-      data: {
-        companyId: id,
-        companyName: name, 
-        email, 
-        website
-      }
-    });
-  });
-};
-
-const deleteCompany = async (req, res, next) => {
-  const { id } = req.params;
-  await sql.query("DELETE FROM companies WHERE id = ?", id, (err, result) => {
-    if (err) {
-      console.log("error: ", err);
-      return res.status(400).json({ error: 'Error deleting company' });
-    }
-        
-    if (result.affectedRows == 0) {
-      // not found Customer with the id
-      return res.json({ message: "company not found" });
-    }
-
-    return res.status(200).json({
-      message: 'success',
-      data: {
-        companyId: id
-      }
-    });
-  });
-};
 
 module.exports = {
   getCompanies,
-  createCompany,
-  updateCompany,
-  deleteCompany
+  createCompany
 }
