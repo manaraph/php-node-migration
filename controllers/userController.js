@@ -53,61 +53,9 @@ const createUser = (req, res, next) => {
   });
 };
 
-const updateUser = async (req, res, next) => {
-  const { firstname, lastname, company, email, phone } = req.body;
-  const { userId } = req.params;
-  await sql.query("UPDATE users SET firstname = ?, lastname = ?, company = ?, email = ?, phone = ? WHERE id = ?", [firstname, lastname, company, email, phone, userId ], (err, result) => {
-    if (err) {
-      console.log("error: ", err);
-      // next(err, null);
-      return res.status(400).json({ error: 'Error updating User' });
-    }
-
-    if (result.affectedRows == 0) {
-      // not found Customer with the id
-      return res.json({ message: "User not found" });
-    }
-
-    return res.status(200).json({
-      message: 'success',
-      data: {
-        userId,
-        firstname, 
-        lastname, 
-        company, 
-        email, 
-        phone
-      }
-    });
-  });
-};
-
-const deleteUser = async (req, res, next) => {
-  const { userId } = req.params;
-  await sql.query("DELETE FROM users WHERE id = ?", userId, (err, result) => {
-    if (err) {
-      console.log("error: ", err);
-      return res.status(400).json({ error: 'Error deleting user' });
-    }
-        
-    if (result.affectedRows == 0) {
-      // not found Customer with the id
-      return res.json({ message: "User not found" });
-    }
-
-    return res.status(200).json({
-      message: 'success',
-      data: {
-        userId
-      }
-    });
-  });
-};
 
 module.exports = {
   getAllUsers,
   getUser,
   createUser,
-  updateUser,
-  deleteUser
 }
