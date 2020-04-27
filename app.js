@@ -29,11 +29,11 @@ app.use('/api/v1/business', verifyToken, businessRouter );
 app.use('/api/v1/user', verifyToken, userRouter );
 
 //Setup our mini-crm employee Router
-app.use('/api/v1/review', verifyToken, reviewRouter );
+app.use('/api/v1/review', reviewRouter );
 
 // Handle undefined routes
 app.use('*', (_req, res) => {
-  res.json({
+  res.status(404).json({
     success: false,
     message: 'Resource not available'
   });
