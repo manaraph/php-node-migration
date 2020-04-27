@@ -37,8 +37,7 @@ const getUser = (req, res, next) => {
 
 const createUser = (req, res, next) => {
   const { firstname, lastname, email, phone } = req.body;
-  const { companyId } = req.params;
-  sql.query("INSERT INTO users SET firstname = ?, lastname = ?, company = ?, email = ?, phone = ?", [firstname, lastname, companyId, email, phone ], (err, result) => {
+  sql.query("INSERT INTO users SET firstname = ?, lastname = ?, email = ?, phone = ?", [firstname, lastname, email, phone ], (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
