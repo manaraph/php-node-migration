@@ -18,8 +18,8 @@ const getAllUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  const { companyId } = req.params;
-  sql.query("SELECT * FROM users WHERE company = ?", companyId, (err, result) => {
+  const { userId } = req.params;
+  sql.query("SELECT * FROM users WHERE id = ?", userId, (err, result) => {
     if (err) {
       console.log("error: ", err);
       // next(err, null);
@@ -107,7 +107,7 @@ const deleteUser = async (req, res, next) => {
 
 module.exports = {
   getAllUsers,
-  getUsers,
+  getUser,
   createUser,
   updateUser,
   deleteUser

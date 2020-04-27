@@ -23,10 +23,10 @@ app.get('/', (req, res) => {
 app.use('/api/v1/auth', authRouter );
 
 //Setup our mini-crm company Router
-app.use('/api/v1/company', verifyToken, businessRouter );
+app.use('/api/v1/business', verifyToken, businessRouter );
 
 //Setup our mini-crm employee Router
-app.use('/api/v1/employee', verifyToken, userRouter );
+app.use('/api/v1/user', verifyToken, userRouter );
 
 //Setup our mini-crm employee Router
 app.use('/api/v1/review', verifyToken, reviewRouter );
